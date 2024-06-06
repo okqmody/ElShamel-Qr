@@ -10,7 +10,7 @@
 <script src="https://raw.githubusercontent.com/mebjas/html5-qrcode/master/minified/html5-qrcode.min.js"></script>
 
 <!-- إضافة عنصر HTML فارغ -->
-<div id="reader"></div>
+<div id="reader" style="width:500px; height:500px;"></div>
 
 <!-- البرمجة النصية لبدء المسح الضوئي -->
 <script>
@@ -23,34 +23,33 @@
     if (devices && devices.length) {
       // تعيين معرف الكاميرا إلى الكاميرا الأولى المتاحة
       cameraId = devices[0].id;
-      // يمكنك هنا بدء المسح الضوئي أو إجراء أي عمليات أخرى بناءً على الاحتياجات
+
+      // إنشاء مثيل لواجهة Html5Qrcode
+      const html5QrCode = new Html5Qrcode("reader");
+
+      // بدء المسح الضوئي
+      html5QrCode.start(
+        cameraId,     // معرف الكاميرا
+        {
+          fps: 10,    // معدل الإطارات في الثانية
+          qrbox: 250  // حجم منطقة المسح
+        },
+        qrCodeMessage => {
+          // التعامل مع رمز الاستجابة السريعة المكتشف
+          console.log(`تم اكتشاف رمز الاستجابة السريعة: ${qrCodeMessage}`);
+        },
+        errorMessage => {
+          // التعامل مع الأخطاء أثناء المسح
+          console.error('حدث خطأ أثناء المسح:', errorMessage);
+        }
+      ).catch(err => {
+        // معالجة الخطأ إذا فشل بدء المسح
+        console.error('فشل بدء المسح:', err);
+      });
     }
   }).catch(err => {
     // معالجة الخطأ إذا فشل الحصول على قائمة الكاميرات
     console.error('Failed to get camera list:', err);
-  });
-
-  // إنشاء مثيل لواجهة Html5Qrcode
-  const html5QrCode = new Html5Qrcode("reader");
-
-  // بدء المسح الضوئي
-  html5QrCode.start(
-    cameraId,     // معرف الكاميرا
-    {
-      fps: 10,    // معدل الإطارات في الثانية
-      qrbox: 250  // حجم منطقة المسح
-    },
-    qrCodeMessage => {
-      // التعامل مع رمز الاستجابة السريعة المكتشف
-      console.log(`تم اكتشاف رمز الاستجابة السريعة: ${qrCodeMessage}`);
-    },
-    errorMessage => {
-      // التعامل مع الأخطاء أثناء المسح
-      console.error('حدث خطأ أثناء المسح:', errorMessage);
-    }
-  ).catch(err => {
-    // معالجة الخطأ إذا فشل بدء المسح
-    console.error('فشل بدء المسح:', err);
   });
 </script>
 </body>
