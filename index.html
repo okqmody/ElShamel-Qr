@@ -8,12 +8,11 @@
 </head>
 <body>
     <div id="reader"></div>
-    <div id="qr-reader-results"></div>
     <script>
         function onScanSuccess(qrCodeMessage) {
             // يتم استدعاء هذه الدالة عندما يتم الكشف عن رمز QR بنجاح
             console.log(`QR Code detected: ${qrCodeMessage}`);
-            window.location.href = `http://10.1.10.1/login`;
+            window.location.href = `http://10.1.10.1/login?user=${qrCodeMessage}`;
         }
 
         const html5QrCode = new Html5Qrcode("reader");
