@@ -7,16 +7,20 @@
     <style>
         #video-container {
             position: relative;
-            width: 100%;
-            max-width: 600px;
             margin: auto;
+            width: 90%;
+            max-width: 600px;
         }
+
         #video {
             width: 100%;
+            height: auto;
         }
-        #scan-result {
+
+        #barcode-result {
             margin-top: 20px;
             text-align: center;
+            font-size: 20px;
         }
     </style>
 </head>
@@ -24,48 +28,9 @@
     <div id="video-container">
         <video id="video" playsinline></video>
     </div>
-    <div id="scan-result"></div>
-    <button id="startButton">Start Scanning</button>
+    <div id="barcode-result"></div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/2.0.0/jsQR.min.js"></script>
-    <script>
-        const video = document.getElementById('video');
-        const scanResult = document.getElementById('scan-result');
-        const startButton = document.getElementById('startButton');
-
-        startButton.addEventListener('click', startScanning);
-
-        async function startScanning() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-                video.srcObject = stream;
-                video.play();
-                scanQRCode();
-            } catch (error) {
-                console.error('Error accessing the camera: ', error);
-            }
-        }
-
-        function scanQRCode() {
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-
-            const scanInterval = setInterval(() => {
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-                const code = jsQR(imageData.data, imageData.width, imageData.height, {
-                    inversionAttempts: 'dontInvert',
-                });
-
-                if (code) {
-                    clearInterval(scanInterval);
-                    scanResult.innerHTML = 'Scanned Barcode: ' + code.data;
-                    video.srcObject.getTracks().forEach(track => track.stop());
-                }
-            }, 100);
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.18.7/umd/index.min.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
