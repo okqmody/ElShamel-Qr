@@ -8,11 +8,13 @@
 </head>
 <body>
     <div id="reader"></div>
-
+    <div id="qr-reader-results"></div>
     <script>
         function onScanSuccess(qrCodeMessage) {
+            var resultContainer = document.getElementById('qr-reader-results');
             // يتم استدعاء هذه الدالة عندما يتم الكشف عن رمز QR بنجاح
             console.log(`QR Code detected: ${qrCodeMessage}`);
+            resultContainer.innerHTML = `<p>QR Code detected:${decodedText}</p>`;
         }
 
         const html5QrCode = new Html5Qrcode("reader");
