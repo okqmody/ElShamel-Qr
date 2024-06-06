@@ -3,28 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Scanner</title>
-    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <title>Barcode Scanner</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
 </head>
 <body>
-    <h1>QR Code Scanner</h1>
-    <div id="reader" style="width: 500px;"></div>
-    <script>
-        function onScanSuccess(decodedText, decodedResult) {
-            // Handle the scanned code as you like, for example:
-            console.log(`Code matched = ${decodedText}`, decodedResult);
-            alert(`Scanned Code: ${decodedText}`);
-        }
-
-        function onScanFailure(error) {
-            // handle scan failure, usually better to ignore and keep scanning
-            console.warn(`Code scan error = ${error}`);
-        }
-
-        let html5QrcodeScanner = new Html5QrcodeScanner(
-            "reader", { fps: 10, qrbox: 250 });
-        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-    </script>
+    <h1>Barcode Scanner</h1>
+    <video id="video" width="300" height="200" style="border: 1px solid black;"></video>
+    <div id="result"></div>
+    <script src="app.js"></script>
 </body>
 </html>
 
