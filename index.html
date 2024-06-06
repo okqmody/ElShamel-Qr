@@ -1,56 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مسح رموز الاستجابة السريعة</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Scanner</title>
+    <script src="https://raw.githack.com/mebjas/html5-qrcode/master/minified/html5-qrcode.min.js"></script>
 </head>
 <body>
-<!-- تنزيل مكتبة Html5Qrcode -->
-<script src="https://raw.githubusercontent.com/mebjas/html5-qrcode/master/minified/html5-qrcode.min.js"></script>
+    <div id="reader"></div>
 
-<!-- إضافة عنصر HTML فارغ -->
-<div id="reader" style="width:500px; height:500px;"></div>
-
-<!-- البرمجة النصية لبدء المسح الضوئي -->
-<script>
-  // تعريف متغير لتخزين معرف الكاميرا
-  var cameraId;
-
-  // استدعاء الدالة للحصول على قائمة الكاميرات المتاحة
-  Html5Qrcode.getCameras().then(devices => {
-    // فحص ما إذا كانت هناك كاميرا متاحة
-    if (devices && devices.length) {
-      // تعيين معرف الكاميرا إلى الكاميرا الأولى المتاحة
-      cameraId = devices[0].id;
-
-      // إنشاء مثيل لواجهة Html5Qrcode
-      const html5QrCode = new Html5Qrcode("reader");
-
-      // بدء المسح الضوئي
-      html5QrCode.start(
-        cameraId,     // معرف الكاميرا
-        {
-          fps: 10,    // معدل الإطارات في الثانية
-          qrbox: 250  // حجم منطقة المسح
-        },
-        qrCodeMessage => {
-          // التعامل مع رمز الاستجابة السريعة المكتشف
-          console.log(`تم اكتشاف رمز الاستجابة السريعة: ${qrCodeMessage}`);
-        },
-        errorMessage => {
-          // التعامل مع الأخطاء أثناء المسح
-          console.error('حدث خطأ أثناء المسح:', errorMessage);
+    <script>
+        function onScanSuccess(qrCodeMessage) {
+            // يتم استدعاء هذه الدالة عندما يتم الكشف عن رمز QR بنجاح
+            console.log(`QR Code detected: ${qrCodeMessage}`);
         }
-      ).catch(err => {
-        // معالجة الخطأ إذا فشل بدء المسح
-        console.error('فشل بدء المسح:', err);
-      });
-    }
-  }).catch(err => {
-    // معالجة الخطأ إذا فشل الحصول على قائمة الكاميرات
-    console.error('Failed to get camera list:', err);
-  });
-</script>
+
+        const html5QrCode = new Html5Qrcode("reader");
+
+        html5QrCode.start(
+            { facingMode: "environment" }, // يتم تحديد وضع الكاميرا (الخلفية)
+            { fps: 10, qrbox: 250 },       // خيارات إضافية مثل سرعة الإطارات وحجم مربع الكشف
+            onScanSuccess
+        ).catch(err => console.log(err));
+
+        // قم بإيقاف القارئ عند إغلاق الصفحة لتوفير الطاقة
+        window.onbeforeunload = () => html5QrCode.stop();
+    </script>
 </body>
 </html>
