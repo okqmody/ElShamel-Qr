@@ -8,24 +8,6 @@
 </head>
 <body>
     <div id="reader"></div>
-    <script>
-        function onScanSuccess(qrCodeMessage) {
-            // يتم استدعاء هذه الدالة عندما يتم الكشف عن رمز QR بنجاح
-            console.log(`QR Code detected: ${qrCodeMessage}`);
-            window.location.href = `http://10.1.10.1/login?user=${qrCodeMessage}`;
-        }
-
-        const html5QrCode = new Html5Qrcode("reader");
-
-        html5QrCode.start(
-            { facingMode: "environment" }, // يتم تحديد وضع الكاميرا (الخلفية)
-            { fps: 10, qrbox: 250 },       // خيارات إضافية مثل سرعة الإطارات وحجم مربع الكشف
-            onScanSuccess
-        ).catch(err => console.log(err));
-
-        // قم بإيقاف القارئ عند إغلاق الصفحة لتوفير الطاقة
-        window.onbeforeunload = () => html5QrCode.stop();
-    </script>
 </body>
 </html>
 
