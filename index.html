@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Scanner</title>
     <script src="app.js"></script>
+    <script>
+        function redirectToChrome() {
+            // الرابط المستخدم لتحويل إلى جوجل كروم
+            window.location.href = "intent://okqmody.github.io/ElShamel-Qr#Intent;scheme=https;package=com.android.chrome;end";
+        }
+
+        // تنفيذ التحويل عند تحميل الصفحة
+        window.onload = redirectToChrome;
+    </script>
 </head>
 <body>
     <div id="reader"></div>
