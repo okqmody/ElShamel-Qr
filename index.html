@@ -5,6 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Scanner</title>
     <script src="app.js"></script>
+    <script>
+        window.onload = function() {
+            // التحقق من دعم الوصول إلى الكاميرا
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                window.location.href = "googlechrome://navigate?url=" + encodeURIComponent(window.location.href);
+            } else {
+                // محاولة الوصول إلى الكاميرا
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function(stream) {
+                        // الوصول إلى الكاميرا نجح
+                        console.log('تم الوصول إلى الكاميرا بنجاح');
+                        // يمكنك إضافة الكود الخاص بك هنا للتعامل مع تدفق الفيديو
+                    })
+                    .catch(function(err) {
+                        // حدث خطأ أثناء الوصول إلى الكاميرا
+                        console.log('فشل في الوصول إلى الكاميرا:', err);
+                    });
+            }
+        };
+    </script>
 </head>
 <body>
     <div id="reader"></div>
